@@ -5,7 +5,7 @@ phases:
       python: 3.11
     commands:
       - pip install --upgrade pip
-      - pip install -r requirements.txt
+      - pip install -r requirements.txt pylint
       
   pre_build:
     commands:
@@ -15,6 +15,9 @@ phases:
 
   build:
     commands:
+      - echo "PyLint Started"
+      - pylint invoice_pro/**/*.py || true
+      - echo "pre build stage completed - PyLint Completed!!"  
       - echo "Build Complete"
 artifacts:
   files:
