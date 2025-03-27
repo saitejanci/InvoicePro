@@ -5,20 +5,30 @@ phases:
       python: 3.11
     commands:
       - pip install --upgrade pip
-      - pip install -r requirements.txt pylint
+      - pip install -r requirements.txt     
+      - yum update -y
+      - yum install -y jq
       
   pre_build:
     commands:
       - echo "PRE-Build stage"
       - python --version
-      - python manage.py collectstatic --noinput   
+      - python manage.py collectstatic --noinput
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
+      - unzip ./sonar-scanner-cli-4.7.0.2747-linux.zip
+      - export PATH=$PATH:./sonar-scanner-4.7.0.2747-linux/bin/
+      - echo "pre build stage completed"      
+      - echo "PyLint Started"
+      - pylint invoice_pro/**/*.py || true
+      - echo "pre build stage completed - PyLint Completed!!"      
 
   build:
     commands:
-      - echo "PyLint Started"
-      - pylint invoice_pro/**/*.py || true
-      - echo "pre build stage completed - PyLint Completed!!"  
-      - echo "Build Complete"
+          - echo "Sonar Cloud Started"
+          - sonar-scanner -Dsonar.login=b6b03178659c67a5bc78ff63d47920806f421ed8 -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.projectKey=saitejanci_InvoicePro -Dsonar.organization=saitejanci || true
+          - sleep 5
+          - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=saitejanci_InvoicePro >result.json
+          - echo "Build stage completed!"
 artifacts:
   files:
     - '**/*'
