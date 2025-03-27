@@ -31,9 +31,9 @@ phases:
   build:
     commands:
           - echo "Sonar Cloud Started"
-          - sonar-scanner -Dsonar.login=b6b03178659c67a5bc78ff63d47920806f421ed8 -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.projectKey=saitejanci_InvoicePro -Dsonar.organization=saitejanci || true
+          - sonar-scanner -Dsonar.login=$LOGIN -Dsonar.host.url=$HOST -Dsonar.projectKey=$Project -Dsonar.organization=$Organization || true
           - sleep 5
-          - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=saitejanci_InvoicePro >result.json
+          - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$Project >result.json
           - echo "Build stage completed!"
 artifacts:
   files:
