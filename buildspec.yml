@@ -9,7 +9,9 @@ phases:
       
   pre_build:
     commands:
-      - echo "PRE-Build stage"   
+      - echo "PRE-Build stage"
+      - python --version
+      - python manage.py collectstatic --noinput   
 
   build:
     commands:
