@@ -2,9 +2,9 @@ version: 0.2
 env:
   secrets-manager:
     LOGIN: prod/sonarcloud/x23411520:token
-    HOST: prod/sonar/x23411520:HOST
-    Organization: prod/sonar/x23411520:Organization
-    Project: prod/sonar/x23411520:Project
+    HOST: prod/sonarcloud/x23411520:HOST
+    Organization: prod/sonarcloud/x23411520:Organization
+    Project: prod/sonarcloud/x23411520:Project
 phases:
   install:
     runtime-versions:
