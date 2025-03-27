@@ -1,0 +1,48 @@
+{% extends "invoice/base/base.html" %}
+<!-- Content Row -->
+{% block content %}
+<div class="row">
+    <!-- Area Chart -->
+    <div class="col-xl-12 col-lg-7">
+        <div class="card shadow mb-4" style="background-color: #adb5bd;">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"  style="background-color: #1b4965;">
+                <label class="m-0 font-weight-bold text-light">Products</label>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th style="color: #000000; font-weight: 700;">Product</th>
+                                <th style="color: #000000; font-weight: 700;">Price</th>
+                                <th style="color: #000000; font-weight: 700;">Amount</th>
+                                <th style="color: #000000; font-weight: 700;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in invoice_detail %}
+                            <tr>
+                                <td style="padding: 0.45em; color: #000000;">
+                                    {{i.product}}
+                                </td>
+                                <td style="padding: 0.45em; color: #000000;">
+                                    {{i.product.product_price}}
+                                </td>
+                                <td style="padding: 0.45em; color: #000000;">
+                                    {{i.amount}}
+                                </td>
+                                <td style="padding: 0.45em; color: #000000;">
+                                    {{i.get_total_bill}}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
