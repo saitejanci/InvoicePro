@@ -3,6 +3,6 @@ version: 0.2
 phases:
   build:
     commands:
-      - echo"Testing"
+      - echo "Testing"
       - pip install -r requirements.txt  # Install dependencies
       - python manage.py test 
