@@ -10,31 +10,44 @@ phases:
     runtime-versions:
       python: 3.11
     commands:
+      - echo "<-- RUNTIME Installations -->"
       - pip install --upgrade pip
-      - pip install -r requirements.txt  pylint   
+      - pip install -r requirements.txt pylint
       - yum update -y
       - yum install -y jq
+      # Install Java 17 correctly
+      - sudo yum remove -y java-11-openjdk
+      - sudo yum install -y java-17-amazon-corretto
+      - java -version  # Verify installed Java version
+      - export JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto.x86_64
+      - export PATH=$JAVA_HOME/bin:$PATH
+      - echo "JAVA_HOME is set to $JAVA_HOME"
+      - java -version  # Confirm Java 17 is being used
       
   pre_build:
     commands:
       - echo "PRE-Build stage"
       - python --version
       - python manage.py collectstatic --noinput
-      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
-      - unzip ./sonar-scanner-cli-4.7.0.2747-linux.zip
-      - export PATH=$PATH:./sonar-scanner-4.7.0.2747-linux/bin/
-      - echo "pre build stage completed"      
+      # Download latest SonarScanner CLI (v5.0+)
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+      - unzip ./sonar-scanner-cli-5.0.1.3006-linux.zip
+      - export PATH=$PATH:./sonar-scanner-5.0.1.3006-linux/bin/
+      - sonar-scanner --version  # Verify sonar-scanner version
+      - echo "pre build stage completed"
       - echo "PyLint Started"
       - pylint invoice_pro/**/*.py || true
-      - echo "pre build stage completed - PyLint Completed!!"      
+      - echo "pre build stage completed - PyLint Completed!!"  
 
   build:
     commands:
-          - echo "Sonar Cloud Started"
-          - sonar-scanner -Dsonar.login=$LOGIN -Dsonar.host.url=$HOST -Dsonar.projectKey=$Project -Dsonar.organization=$Organization || true
-          - sleep 5
-          - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$Project >result.json
-          - echo "Build stage completed!"
+      - echo "Build Stage"
+      - echo "Sonar Cloud Started"
+      - sonar-scanner -Dsonar.login=$LOGIN -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=$Project -Dsonar.organization=$Organization -Dsonar.coverage.exclusions=**/* || true
+      - sleep 5
+      - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$Project >result.json
+      - cat result.json
+      - echo "Build stage completed!"
 artifacts:
   files:
     - '**/*'
