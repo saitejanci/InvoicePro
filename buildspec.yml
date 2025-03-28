@@ -43,7 +43,7 @@ phases:
     commands:
       - echo "Build Stage"
       - echo "Sonar Cloud Started"
-      - sonar-scanner -Dsonar.login=$LOGIN -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=$Project -Dsonar.organization=$Organization -Dsonar.coverage.exclusions=**/* || true
+      - sonar-scanner -Dsonar.login=$LOGIN -Dsonar.host.url=HOST -Dsonar.projectKey=$Project -Dsonar.organization=$Organization -Dsonar.coverage.exclusions=**/* || true
       - sleep 5
       - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$Project >result.json
       - cat result.json
