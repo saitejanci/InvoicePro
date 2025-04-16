@@ -11,9 +11,6 @@ def getTotalIncome():
     totalIncome = 0
     for curr in allInvoice:
         totalIncome += curr.total
-        
-        
-        
     return totalIncome
 
 
