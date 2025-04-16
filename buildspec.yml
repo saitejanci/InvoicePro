@@ -51,3 +51,4 @@ phases:
 artifacts:
   files:
     - '**/*'
+    - pylint_report.txt
