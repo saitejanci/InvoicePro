@@ -36,6 +36,7 @@ phases:
       - sonar-scanner --version  # Verify sonar-scanner version
       - echo "pre build stage completed"
       - echo "PyLint Started"
+      - pylint invoice/**/*.py
       - pylint invoice_pro/**/*.py
       - echo "pre build stage completed - PyLint Completed!!"  
 
